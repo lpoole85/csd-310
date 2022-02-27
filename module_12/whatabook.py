@@ -75,7 +75,7 @@ def validate_user():
         user_id = int(input('\n      Please enter your customerID: '))
 
         if user_id < 0 or user_id > 3:
-            print("\n  Sorry, invalid customerID. Exiting.\n")
+            print("\n  Sorry, that customerID is not valid. Exiting.\n")
             sys.exit(0)
         get_name = ("SELECT user.first_name, user.last_name FROM user WHERE user.user_id  = user_id")
         return user_id 
@@ -159,7 +159,7 @@ try:
                     db.commit() # commit the changes to the database 
                     print("\n        Book id: {} was added to your wishlist!".format(book_id))
                 if account_option < 0 or account_option > 3:
-                    print("\n      Invalid option, please retry...")
+                    print("\n      Sorry that UserID is not valid, please retry...")
                 account_option = show_account_menu()
         if user_selection < 0 or user_selection > 4:
             print("\n      Invalid option, please retry...")
