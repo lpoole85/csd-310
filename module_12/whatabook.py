@@ -10,6 +10,7 @@ from webbrowser import get
 import mysql.connector
 from mysql.connector import errorcode
 
+#Database requirements to login
 config = {
     "user": "whatabook_user",
     "password": "MySQL8IsGreat!",
@@ -21,6 +22,7 @@ config = {
 
 #Functions area
 
+#Function to show the WhataBook menu
 def show_menu():
     print("\n  Welcome to the WhataBook Store! \n")
 
@@ -35,6 +37,7 @@ def show_menu():
 
         sys.exit(0)
 
+#Function to show all available books
 def show_books(_cursor):
     # inner join query 
     _cursor.execute("SELECT book_id, book_name, author, details from book")
@@ -48,6 +51,7 @@ def show_books(_cursor):
     for book in books:
         print("  Book ID: {}\n  Book Name: {}\n  Author: {}\n  Details: {}\n".format(book[0], book[1], book[2], book[3]))
 
+#Function to show WhataBook store locations
 def show_locations(_cursor):
     _cursor.execute("SELECT store_id, locale from store")
 
@@ -58,6 +62,7 @@ def show_locations(_cursor):
     for location in locations:
         print("  Locale: {}\n".format(location[1]))
 
+#Function to display users menu
 def show_account_menu():
     try:
         print("\n      -- Welcome! Please select an option --")
@@ -70,6 +75,7 @@ def show_account_menu():
 
         sys.exit(0)
 
+#Function to validate user's ID is valid in the database
 def validate_user():
     try:
         user_id = int(input('\n      Please enter your customerID: '))
@@ -85,19 +91,7 @@ def validate_user():
         print("\n  Invalid number, Exiting...\n")
         sys.exit(0)
 
-def show_account_menu():
-    try:
-        
-        print("\n      -- Customer Menu --")
-        print("        1. Wishlist\n        2. Add Book\n        3. Main Menu")
-        account_option = int(input('        <Example enter: 1 for wishlist>: '))
-
-        return account_option
-    except ValueError:
-        print("\n  Invalid number, program terminated...\n")
-
-        sys.exit(0)
-
+#Function to show the wishlist of the userID entered
 def show_wishlist(_cursor, _user_id):
     _cursor.execute("SELECT user.user_id, user.first_name, user.last_name, book.book_id, book.book_name, book.author " + 
                     "FROM wishlist " + 
@@ -112,6 +106,7 @@ def show_wishlist(_cursor, _user_id):
     for book in wishlist:
         print("        Book Name: {}\n        Author: {}\n".format(book[4], book[5]))
 
+#Function to show available books to add to a wishlist, accepts 2 parameters
 def show_books_to_add(_cursor, _user_id):
     query = ("SELECT book_id, book_name, author, details "
             "FROM book "
@@ -128,6 +123,7 @@ def show_books_to_add(_cursor, _user_id):
     for book in books_to_add:
         print("        Book Id: {}\n        Book Name: {}\n".format(book[0], book[1]))
 
+#Function to add a book to a wishlist, accepts 3 parameters
 def add_book_to_wishlist(_cursor, _user_id, _book_id):
     _cursor.execute("INSERT INTO wishlist(user_id, book_id) VALUES({}, {})".format(_user_id, _book_id))
 
@@ -140,7 +136,7 @@ try:
     #print("\n  Welcome to the WhatABook Application! ")
     user_selection = show_menu() # show the main menu 
 
-    
+#This section outlines all the available selections the user can input and which function gets called for their number    
     while user_selection != 4:
         if user_selection == 1:
             show_books(cursor)
@@ -169,6 +165,7 @@ try:
 
     print("\n\n  Thanks for stopping by!")
 
+#Here are some error handling
 except mysql.connector.Error as err:
     """ handle errors """ 
 
